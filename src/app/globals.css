@@ -1,53 +1,16 @@
 @import "tailwindcss";
 
-/*
-   RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@keyframes floating {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
-/* HTML & BODY */
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  min-height: 100dvh;
-  background: #ebebeb;
-  color: #111827;
-}
-
-/* MEDIA */
-
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-}
-
-/* FORM */
-
-input,
-textarea,
-select {
-  font: inherit;
-}
-
-/* LINK */
-
-a {
-  text-decoration: none;
-}
-
-/* LIST */
-
-ul,
-ol {
-  list-style: none;
+.animate-floating {
+  animation: floating 3s ease-in-out infinite;
 }
