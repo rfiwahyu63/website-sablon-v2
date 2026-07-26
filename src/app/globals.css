@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+  --bg-1: #969696;
+}
+
 @keyframes floating {
   0%,
   100% {
