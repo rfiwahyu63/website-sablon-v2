@@ -14,8 +14,8 @@ export default function SearchBar (){
       <input
       value={keyword}
       onChange={(e) => setKeyword (e.target.value)}
-      placeholder="Cari"
-      className="w-full border border-gray-200 rounded-md cursor-text px-2 mx-2 outline-none"
+      placeholder="Search ?"
+      className="w-full border italic border-gray-200 rounded-md cursor-text px-2 mx-2 outline-none"
       >
       </input>
       
