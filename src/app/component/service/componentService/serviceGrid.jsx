@@ -1,9 +1,9 @@
 import ServiceCard from "./serviceCard";
 import { services } from "../data";
 
-export default function ServiceGrid() {
+export default function Service() {
   return (
-    <section className="py-20">
+    <section id="service" className="py-20">
       <div className="mx-auto max-w-7xl px-6">
 
         <div className="mb-12 text-center">

@@ -19,7 +19,7 @@ const menus = [
   },
   {
     name: "Service",
-    href: "/service",
+    href: "/#service",
     icon: Handshake,
   },
   {
@@ -95,7 +95,7 @@ export default function Sidebar () {
         </aside>
 
         {/* sidebar dekstop */}
-        <aside className="hidden lg:flex flex-col w-56 h-screen bg-transparent gap-20 rounded-md border border-gray-200">
+        <aside className="hidden lg:flex fixed left-0 top-0 flex-col overflow-y-auto w-56 h-dvh bg-transparent gap-20 rounded-md border border-gray-200">
           {/* Logo */}
           <div className="pb-6 flex justify-center">
             <Image
@@ -127,14 +127,6 @@ export default function Sidebar () {
                 );
               })}
             </ul>
-          </div>
-
-          <div className="w-full flex flex-col p-2 ">
-            <a
-              className="text-center text-amber-400 animate-floating text-2xl rounded-md font-bold cursor-pointer inline-block relative after:content-[''] after:block after:mt-2 after:h-0.5 after:bg-amber-400 after:scale-x-0 after:origin-center after:transition-transform after:duration-500 hover:after:scale-x-80"
-              href="#" >
-              Order Now!
-            </a>
           </div>
         </aside>
       </>
