@@ -39,32 +39,30 @@ const menus = [
   },
 ];
 
-export default function Navbar() {
+export default function Sidebar () {
   // Untuk reponsive sidebar
   const [isOpen, setIsOpen] = useState(false);
   //
   return (
     <div>
-      <button
-        className="fixed p-2 m-5 bg-amber-400 rounded-2xl shadow-[-1px_1px_8px_rgba(0,0,0,0.4)] hover:text-white transition delay-200 cursor-pointer lg:hidden"
+      <button className="fixed p-2 m-6 bg-transparent rounded-xl shadow-[-1px_1px_8px_rgba(0,0,0,0.4)] hover:text-white transition delay-200 cursor-pointer lg:hidden"
         onClick={() => setIsOpen(!isOpen)}
       >
         <Menu />
       </button>
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+        <div className="fixed inset-0 bg-black/80 z-40 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}{" "}
       <>
         {/* sidebar mobile */}
-        <aside
-          className={`fixed top-0 left-0 w-48 h-screen lg:hidden bg-slate-400 z-50 gap-10 rounded-md border-gray-200 shadow-[3px_0px_5px_rgba(0,0,0,0.2)] transition-transform duration-700 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"} `}
+
+        <aside className={`fixed top-0 left-0 w-48 h-screen lg:hidden bg-primary z-50 gap-10 rounded-md shadow-[3px_0px_5px_rgba(0,0,0,0.2)] transition-transform duration-700 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"} `}
           onClick={() => setIsOpen(false)}
         >
           {/* Logo */}
-          <div className="border-b border-gray-50/50 pb-6 flex justify-center">
+          <div className="pb-6 flex justify-center">
             <Image
               src="/assets/logo-rfidesigntrans.png"
               alt="RFI Logo"
@@ -75,19 +73,18 @@ export default function Navbar() {
           </div>
 
           <div className="w-full">
-            <ul className="flex flex-col items-center gap-15 mt-20">
+            <ul className="flex flex-col gap-15 ml-8 mt-20">
               {menus.map((menu) => {
                 const Icon = menu.icon;
                 return (
-                  <li
-                    className="relative after:content-[''] after:block after:pb-2 after:border-b after:border-amber-500 after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-75"
+                  <li 
                     key={menu.name}
-                  >
+                    className="inline-block relative after:content-[''] after:block after:mt-2 after:h-0.5 after:bg-amber-400 after:scale-x-0 after:origin-left after:transition-transform after:duration-500 hover:after:scale-x-80" >
                     <Link
                       href={menu.href}
-                      className="flex items-center font-bold italic gap-4 cursor-pointer hover:text-amber-400 transition-colors"
+                      className="flex font-bold italic gap-4 cursor-pointer hover:text-amber-400 transition delay-75"
                     >
-                      <Icon className="w-5 h-5 text-red" />
+                      <Icon className="w-5 h-5" />
                       <span>{menu.name}</span>
                     </Link>
                   </li>
@@ -98,9 +95,9 @@ export default function Navbar() {
         </aside>
 
         {/* sidebar dekstop */}
-        <aside className="hidden lg:flex flex-col w-56 h-screen bg-slate-400 gap-20 rounded-md border-gray-200 shadow-[3px_0px_5px_rgba(0,0,0,0.2)]">
+        <aside className="hidden lg:flex flex-col w-56 h-screen bg-transparent gap-20 rounded-md border border-gray-200">
           {/* Logo */}
-          <div className="border-b border-gray-300/50 pb-6 flex justify-center">
+          <div className="pb-6 flex justify-center">
             <Image
               src="/assets/logo-rfidesigntrans.png"
               alt="RFI Logo"
@@ -111,19 +108,19 @@ export default function Navbar() {
           </div>
 
           <div className="w-full">
-            <ul className="flex flex-col items-center gap-15">
+            <ul className="flex flex-col ml-8 gap-10">
               {menus.map((menu) => {
                 const Icon = menu.icon;
                 return (
                   <li
-                    className="relative after:content-[''] after:block after:pb-2 after:border-b after:border-amber-500 after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-75"
-                    key={menu.name}
-                  >
+                    
+                      key={menu.name}
+                      className="inline-block relative after:content-[''] after:block after:mt-2 after:h-0.5 after:bg-amber-400 after:scale-x-0 after:origin-left after:transition-transform after:duration-500 hover:after:scale-x-50">
                     <Link
                       href={menu.href}
-                      className="flex items-center font-bold italic gap-4 cursor-pointer hover:text-amber-400 transition-colors"
+                      className="flex items-center font-bold italic gap-4 cursor-pointer hover:text-amber-400 transition delay-75"
                     >
-                      <Icon className="w-5 h-5 text-red" />
+                      <Icon className="w-5 h-5" />
                       <span>{menu.name}</span>
                     </Link>
                   </li>
@@ -134,9 +131,8 @@ export default function Navbar() {
 
           <div className="w-full flex flex-col p-2 ">
             <a
-              className="text-center text-amber-400 animate-floating text-2xl rounded-md font-bold cursor-pointer relative after:content-[''] after:block after:pb-2 after:border-b after:border-amber-500 after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-75"
-              href="#"
-            >
+              className="text-center text-amber-400 animate-floating text-2xl rounded-md font-bold cursor-pointer inline-block relative after:content-[''] after:block after:mt-2 after:h-0.5 after:bg-amber-400 after:scale-x-0 after:origin-center after:transition-transform after:duration-500 hover:after:scale-x-80"
+              href="#" >
               Order Now!
             </a>
           </div>

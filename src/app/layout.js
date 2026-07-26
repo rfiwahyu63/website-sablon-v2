@@ -1,6 +1,8 @@
 import "./globals.css";
 import { Poppins, Montserrat } from "next/font/google";
-import Navbar from "./component/navbar";
+import Sidebar from "./component/navbar/sidebar";
+import SearchBar from "./component/searchBar/searchBar";
+
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,8 +31,9 @@ export default function RootLayout({ children }) {
       className={`${poppins.variable} antialiased`}
     >
       <body className="min-h-full flex gap-2">
-        <Navbar />
+        <Sidebar />
         <main className="flex-1">
+        <SearchBar />
         {children}
         </main>
       </body>

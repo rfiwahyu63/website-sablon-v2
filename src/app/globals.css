@@ -1,7 +1,11 @@
 @import "tailwindcss";
 
-:root {
-  --bg-1: #969696;
+@theme {
+  --color-primary: #fefaf2;
+}
+
+body {
+  background-color: #f4f0ed;
 }
 
 @keyframes floating {
