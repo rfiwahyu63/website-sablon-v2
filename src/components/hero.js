@@ -10,7 +10,7 @@ export default function Hero() {
   return (
     <>
       <section className="p-10 mt-4 lg:p-15 bg-transparent rounded-md border border-gray-200">
-        <div className="lg:flex items-center ml-8 lg:ml-auto">
+        <div className="lg:flex items-center mx-4 lg:ml-auto">
           {/* Kiri */}
           <div className="lg:w-1/2">
             <h1 className={`${montserrat.className} text-3xl lg:text-5xl font-bold leading-tight mb-6`} >

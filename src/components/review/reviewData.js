@@ -1,0 +1,43 @@
+const reviews = [
+{
+  id: 1,
+  rating: 5,
+  comment: "Hasil sablon sangat rapi dan pengiriman cepat.",
+  image: "/reviews/review-001.jpg",
+  name: "Andi Saputra",
+  product: "Topi",
+  city: "Bandung",
+  orderDate: "2026-07-20",
+},
+{
+  id: 2,
+  rating: 4,
+  comment: "Hasil sablon sangat rapi dan pengiriman cepat.",
+  image: "/reviews/review-001.jpg",
+  name: "Aji Saputro",
+  product: "Kaos",
+  city: "Depok",
+  orderDate: "2026-07-20",
+},
+{
+  id: 3,
+  rating: 3,
+  comment: "Hasil sablon sangat rapi dan pengiriman cepat.",
+  image: "/reviews/review-001.jpg",
+  name: "Ani Saputri",
+  product: "Jersey",
+  city: "Bandung",
+  orderDate: "2026-07-20",
+},
+{
+  id: 4,
+  rating: 2,
+  comment: "Hasil sablon sangat rapi dan pengiriman cepat.",
+  image: "/reviews/review-001.jpg",
+  name: "Adi putra",
+  product: "Jersey Full Printing",
+  city: "Bekasi",
+  orderDate: "2026-07-20",
+},
+];
+export default reviews ;
