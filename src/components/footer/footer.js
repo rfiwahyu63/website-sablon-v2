@@ -4,9 +4,10 @@ import { FaInstagram, FaFacebook, FaTiktok, FaWhatsapp } from "react-icons/fa6";
 
 export default function Footer() {
   return (
-    <footer id="contact" className="lg:ml-56 text-gray-500 mt-20">
-      <div className="px-14 py-14">
-        <div className="grid md:grid-cols-3 gap-10 lg:gap-80">
+   <footer id="contact" className="mt-30 text-gray-500 lg:pl-56">
+      <div className="mx-auto max-w-7xl px-6 py-10">
+
+        <div className="grid md:grid-cols-3 gap-10 lg:gap-16 px-20 py-10">
           {/* Brand */}
 
           <div>
@@ -97,8 +98,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-zinc-700 mt-10 pt-6 text-center text-zinc-500 text-sm">
-          © 2026 Project Blueprint. All Rights Reserved.
+        <div className="border-t border-gray-500 my-10 pt-6 text-center text-zinc-500 text-sm">
+          © 2026 RFI Media. All Rights Reserved.
         </div>
       </div>
     </footer>

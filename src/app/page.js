@@ -1,6 +1,6 @@
 import Hero from "@/components/hero";
-import Service from "@/components/service/componentService/serviceGrid";
-import ReviewSection from "@/components/review/reviewSection";
+import Service from "@/components/service/service";
+import ReviewSection from "@/components/review/Review";
 
 export default function Home() {
   return (

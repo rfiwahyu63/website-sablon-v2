@@ -36,7 +36,7 @@ export default function SearchBar () {
 
   setTimeout(() => {
   setMessage("");
-  }, 5000);
+  }, 3000);
   }
 
   return (
@@ -62,7 +62,7 @@ export default function SearchBar () {
 
         <button
           onClick={handleSearch}
-          className="bg-orange-500 cursor-pointer hover:bg-amber-700 text-white px-4 py-1 rounded-md"
+          className="bg-amber-500 cursor-pointer hover:bg-amber-600 text-white px-4 py-1 rounded-md"
         >
           Cari
         </button>

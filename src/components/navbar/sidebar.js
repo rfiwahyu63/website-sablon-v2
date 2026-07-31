@@ -59,7 +59,7 @@ export default function Sidebar() {
   return (
     <>
       <button
-        className="fixed bottom-0.5 left-1/2 -translate-x-1/2  z-50 lg:hidden  bg-gray-500 text-white rounded-2xl px-43 py-2 shadow-xl hover:scale-105 hover:bg-blue-200 transition delay-100 cursor-pointer"
+        className="fixed bottom-2 left-1/2 -translate-x-1/2  z-50 lg:hidden  bg-gray-500 text-white rounded-2xl px-43 py-2 shadow-xl hover:scale-105 hover:bg-gray-600 transition delay-100 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
         <Menu size={24} />

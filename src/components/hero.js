@@ -10,7 +10,7 @@ export default function Hero() {
   return (
     <>
       <section className="p-10 mt-4 lg:p-15 bg-transparent">
-        <div className="lg:flex items-center mx-4 lg:ml-auto">
+        <div className="lg:flex items-center mx-4 lg:pl-56">
           {/* Kiri */}
           <div className="lg:w-1/2">
             <h1 className={`${montserrat.className} text-3xl lg:text-5xl font-bold leading-tight mb-6`} >
@@ -24,7 +24,7 @@ export default function Hero() {
               warna awet, dan proses cepat.
             </p>
 
-            <a className="text-black italic px-4 py-2 rounded-xl border border-amber-400 hover:bg-amber-400 cursor-pointer transition delay-100"
+            <a className="text-gray-600 bg-amber-500 px-4 py-2 rounded-xl hover:bg-amber-600 cursor-pointer transition delay-100"
               href="#"
             >
               Pesan Sekarang
