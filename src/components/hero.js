@@ -9,7 +9,7 @@ const montserrat = Montserrat({
 export default function Hero() {
   return (
     <>
-      <section className="p-10 mt-4 lg:p-15 bg-transparent rounded-md border border-gray-200">
+      <section className="p-10 mt-4 lg:p-15 bg-transparent">
         <div className="lg:flex items-center mx-4 lg:ml-auto">
           {/* Kiri */}
           <div className="lg:w-1/2">

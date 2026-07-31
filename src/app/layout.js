@@ -2,6 +2,7 @@ import "./globals.css";
 import { Poppins, Montserrat } from "next/font/google";
 import Sidebar from "@/components/navbar/sidebar";
 import SearchBar from "@/components/searchBar/searchBar";
+import Footer from "@/components/footer/footer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,12 +27,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="id" className={`${poppins.variable} antialiased`}>
-      <body className="min-h-full flex gap-2">
+      <body className="min-h-screen flex flex-col">
+
         <Sidebar />
+
         <main className="flex-1">
-          <SearchBar />
+        <SearchBar />
           {children}
         </main>
+        
+        <Footer />
       </body>
     </html>
   );
