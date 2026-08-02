@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { helpData } from "@/components/help/HelpData";
 import Link from "next/link";
-import { WHATSAPP_NUMBER } from "@/library/contact";
+import { WHATSAPP_NUMBER } from "@/lib/contact";
 
 export default function SearchBar () {
   const [query, setQuery] = useState("");

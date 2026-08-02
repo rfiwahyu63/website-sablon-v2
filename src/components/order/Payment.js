@@ -1,17 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { uploadFile } from "@/lib/uploadFile";
 
 export default function Payment({ order, onBack, onConfirm }) {
   const [metode, setMetode] = useState("");
   const [bukti, setBukti] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const total = Number(order?.harga?.total || 0);
 
   const formatRupiah = (value) =>
     `Rp${Number(value || 0).toLocaleString("id-ID")}`;
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (!metode) {
@@ -24,14 +27,40 @@ export default function Payment({ order, onBack, onConfirm }) {
       return;
     }
 
-    const pembayaran = {
-      metode,
-      bukti,
-      status: "WAITING_CONFIRMATION",
-    };
+    setIsSubmitting(true);
 
-    if (onConfirm) {
-      onConfirm(pembayaran);
+    try {
+      // 1. UPLOAD BUKTI TRANSFER
+      const buktiUrl = await uploadFile(bukti, "bukti-transfer");
+
+      // 2. UPDATE ROW ORDERS YANG SUDAH ADA
+      const { error } = await supabase
+        .from("orders")
+        .update({
+          payment_metode: metode,
+          payment_bukti_url: buktiUrl,
+          payment_status: "WAITING_CONFIRMATION",
+        })
+        .eq("id", order.orderId);
+
+      if (error) {
+        console.error("Update payment gagal:", error.message);
+        throw error;
+      }
+
+      const pembayaran = {
+        metode,
+        buktiUrl,
+        status: "WAITING_CONFIRMATION",
+      };
+
+      if (onConfirm) {
+        onConfirm(pembayaran);
+      }
+    } catch (err) {
+      alert("Gagal mengirim bukti pembayaran. Silakan coba lagi.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -193,9 +222,10 @@ export default function Payment({ order, onBack, onConfirm }) {
 
             <button
               type="submit"
+              disabled={isSubmitting}
               className="rounded-xl bg-gray-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-gray-800"
             >
-              Konfirmasi Pembayaran
+              {isSubmitting ? "Mengirim..." : "Konfirmasi Pembayaran"}
             </button>
           </div>
         </form>

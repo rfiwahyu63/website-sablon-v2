@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { calculateOrderPrice } from "../priceCalculator";
+import { supabase } from "@/lib/supabase";
+import { uploadFile } from "@/lib/uploadFile";
 
 import CustomerData from "./CustomerData";
 import ProductData from "./ProductData";
@@ -47,6 +49,7 @@ const initialFormData = {
 
 export default function OrderForm({ onSubmitOrder }) {
   const [formData, setFormData] = useState(initialFormData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   /* HANDLE FORM INPUT */
   function handleChange(e) {
@@ -180,91 +183,128 @@ export default function OrderForm({ onSubmitOrder }) {
     return 0;
   }
 
-  /* CREATE ORDER DATA */
-
-  function createOrderData() {
-    /* DATA UNTUK PRICE CALCULATOR */
-
+  async function submitOrderToSupabase() {
     const price = calculateOrderPrice({
       jenisOrder: formData.jenisOrder,
       bahan: formData.bahan,
       warna: formData.warna,
-
       jumlah: formData.jumlah,
       ukuran: formData.ukuran,
-
       desainList: formData.desainList,
-
       pengiriman: formData.pengiriman,
       ongkir: formData.ongkir,
     });
 
-    /* ORDER RESMI */
+    // 1. UPLOAD MOCKUP (kalau ada)
+    const mockupUrl = formData.mockup
+      ? await uploadFile(formData.mockup, "mockup")
+      : null;
 
+    // 2. INSERT KE TABLE ORDERS
+    const { data: orderRow, error: orderError } = await supabase
+      .from("orders")
+      .insert({
+        customer_nama: formData.nama,
+        customer_whatsapp: formData.whatsapp,
+        customer_alamat: formData.alamat,
+
+        jenis_order: formData.jenisOrder,
+        bahan: formData.bahan,
+        warna: formData.warna,
+
+        mockup_url: mockupUrl,
+
+        jumlah: formData.jumlah,
+        ukuran: formData.ukuran,
+        total_quantity: price.totalQuantity,
+
+        pengiriman: formData.pengiriman,
+        ongkir: price.ongkir,
+
+        catatan: formData.catatan,
+
+        harga_bahan: price.hargaBahan,
+        harga_bahan_total: price.hargaBahanTotal,
+        harga_desain_dasar: price.hargaDesainDasar,
+        harga_desain_jual: price.hargaDesainJual,
+        harga_desain_total: price.hargaDesainTotal,
+        discount_percent: price.discountPercent,
+        discount_amount: price.discountAmount,
+        total_produksi: price.totalProduksi,
+        total: price.total,
+      })
+      .select()
+      .single();
+
+    if (orderError) {
+      console.error("Insert order gagal:", orderError.message);
+      throw orderError;
+    }
+
+    // 3. UPLOAD SETIAP FILE DESAIN + INSERT KE ORDER_DESIGNS
+    for (const desain of formData.desainList) {
+      const fileUrl = await uploadFile(desain.file, "desain");
+
+      const { error: desainError } = await supabase
+        .from("order_designs")
+        .insert({
+          order_id: orderRow.id,
+          posisi: desain.posisi,
+          ukuran: desain.ukuran,
+          file_url: fileUrl,
+        });
+
+      if (desainError) {
+        console.error("Insert desain gagal:", desainError.message);
+        throw desainError;
+      }
+    }
+
+    // BENTUK DATA UNTUK DITAMPILKAN DI ORDER SUMMARY
     return {
-      // ORDER
-      orderId: null,
-      status: "WAITING_PAYMENT",
+      orderId: orderRow.id,
+      status: orderRow.status,
 
-      // CUSTOMER
       customer: {
         nama: formData.nama,
         whatsapp: formData.whatsapp,
         alamat: formData.alamat,
       },
 
-      // PRODUCT
       product: {
         jenisOrder: formData.jenisOrder,
         bahan: formData.bahan,
         warna: formData.warna,
       },
 
-      // DESIGN
       desain: {
         desainList: formData.desainList,
         mockup: formData.mockup,
       },
 
-      // QUANTITY
       quantity: {
         jumlah: formData.jumlah,
         ukuran: formData.ukuran,
         total: price.totalQuantity,
       },
 
-      // SHIPPING
       shipping: {
         pengiriman: formData.pengiriman,
         ongkir: price.ongkir,
       },
 
-      // ADDITIONAL
       catatan: formData.catatan,
 
-      // PAYMENT
-      pembayaran: {
-        metode: "",
-        bukti: null,
-        status: "UNPAID",
-      },
-
-      // PRICE
       harga: {
         hargaBahan: price.hargaBahan,
         hargaBahanTotal: price.hargaBahanTotal,
-
         hargaDesainDasar: price.hargaDesainDasar,
         hargaDesainJual: price.hargaDesainJual,
         hargaDesainTotal: price.hargaDesainTotal,
-
         discountPercent: price.discountPercent,
         discountAmount: price.discountAmount,
-
         totalProduksi: price.totalProduksi,
-
         ongkir: price.ongkir,
-
         total: price.total,
       },
     };
@@ -272,9 +312,8 @@ export default function OrderForm({ onSubmitOrder }) {
 
   /* HANDLE SUBMIT */
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-
     // VALIDASI QUANTITY
 
     const totalQuantity = getTotalQuantity();
@@ -310,15 +349,19 @@ export default function OrderForm({ onSubmitOrder }) {
 
       return;
     }
+    // SUBMIT KE SUPABASE
+    setIsSubmitting(true);
 
-    /* BUAT ORDER RESMI */
+    try {
+      const orderRow = await submitOrderToSupabase();
 
-    const orderData = createOrderData();
-
-    /* KIRIM KE PARENT */
-
-    if (onSubmitOrder) {
-      onSubmitOrder(orderData);
+      if (onSubmitOrder) {
+        onSubmitOrder(orderRow);
+      }
+    } catch (err) {
+      alert("Gagal menyimpan pesanan. Silakan coba lagi.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -382,14 +425,37 @@ export default function OrderForm({ onSubmitOrder }) {
             <ShippingData formData={formData} handleChange={handleChange} />
           </div>
 
+          {/* CATATAN — TAMBAHKAN INI */}
+          <div className="border-b border-gray-200 p-6 sm:p-8">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Catatan Tambahan
+            </h2>
+
+            <p className="mt-1 text-sm text-gray-500">
+              Opsional — tulis permintaan khusus jika ada.
+            </p>
+
+            <textarea
+              name="catatan"
+              value={formData.catatan}
+              onChange={handleChange}
+              rows={4}
+              placeholder="Contoh: tolong desain agak digeser ke kiri, dll."
+              className="mt-4 w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 focus:border-gray-400 focus:outline-none"
+            />
+          </div>
+
           {/* SUBMIT */}
 
           <div className="bg-gray-50 p-6 sm:p-8">
             <button
               type="submit"
-              className="w-full rounded-xl bg-gray-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+              disabled={isSubmitting}
+              className="w-full rounded-xl bg-gray-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Lihat Ringkasan Pesanan
+              {isSubmitting
+                ? "Menyimpan pesanan..."
+                : "Lihat Ringkasan Pesanan"}
             </button>
 
             <p className="mt-3 text-center text-xs text-gray-400">

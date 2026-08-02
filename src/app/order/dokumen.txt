@@ -45,3 +45,4 @@ Panjang + 8.000
 7. operasional 20%
 
 8. ongkir jika dikirim
+
