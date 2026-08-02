@@ -9,16 +9,17 @@ import {
   Phone,
   ShoppingCart,
   Menu,
+  Info,
 } from "lucide-react";
 
 const menus = [
   {
-    name: "Home",
+    name: "Beranda",
     href: "/",
     icon: House,
   },
   {
-    name: "Service",
+    name: "Layanan",
     href: "/#service",
     child: true,
     icon: Handshake,
@@ -30,21 +31,26 @@ const menus = [
   //   icon: Images,
   // },
   {
-    name: "Review",
+    name: "Ulasan",
     href: "/#review",
     child: true,
     icon: Images,
   },
   {
-    name: "Contact",
+    name: "Kontak",
     href: "/#contact",
     child: true,
     icon: Phone,
   },
   {
-    name: "Order",
+    name: "Pesanan",
     href: "/order",
     icon: ShoppingCart,
+  },
+  {
+    name: "Bantuan",
+    href: "/help",
+    icon: Info,
   },
 ];
 
@@ -54,7 +60,7 @@ export default function Sidebar() {
   //
   // animasi garis bawah
   const parentClass =
-    "after:content-[''] after:block after:mt-2 after:h-0.5 after:bg-amber-400 after:scale-x-0 after:origin-left after:transition-transform after:duration-500 hover:after:scale-x-60";
+    "after:content-[''] after:block after:mt-2 after:h-0.5 after:bg-amber-400 after:scale-x-0 after:origin-left after:transition-transform after:duration-500 hover:after:scale-x-50";
   //
   return (
     <>

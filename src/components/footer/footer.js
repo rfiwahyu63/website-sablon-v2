@@ -26,7 +26,7 @@ export default function Footer() {
 
             <ul className="space-y-3">
               <li>
-                <Link href="/#">Home</Link>
+                <Link href="/#">Beranda</Link>
               </li>
 
               <li>
@@ -34,7 +34,7 @@ export default function Footer() {
               </li>
 
               <li>
-                <Link href="/#review">Review</Link>
+                <Link href="/#review">Ulasan</Link>
               </li>
 
               <li>
