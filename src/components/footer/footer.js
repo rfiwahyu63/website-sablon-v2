@@ -4,41 +4,79 @@ import { FaInstagram, FaFacebook, FaTiktok, FaWhatsapp } from "react-icons/fa6";
 
 export default function Footer() {
   return (
-   <footer id="contact" className="mt-30 text-gray-500 lg:pl-56">
-      <div className="mx-auto max-w-7xl px-6 py-10">
-
-        <div className="grid md:grid-cols-3 gap-10 lg:gap-16 px-20 py-10">
+    <footer id="contact" className="mt-30 border-t border-gray-100 bg-gray-50 text-gray-500 lg:pl-56">
+      <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="grid gap-12 lg:grid-cols-3 lg:gap-16">
           {/* Brand */}
 
           <div>
             <h2 className="text-2xl font-bold text-orange-500">RFI Design</h2>
 
-            <p className="mt-4 leading-relaxed">
+            <p className="mt-4 max-w-xs leading-relaxed">
               Melayani jasa cetak DTF berkualitas untuk kebutuhan
               bisnis, UMKM, clothing, maupun personal.
             </p>
+
+            <div className="mt-6 flex gap-3">
+              <Link
+                href="https://instagram.com/username_kamu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition hover:border-pink-500 hover:text-pink-500"
+              >
+                <FaInstagram size={16} />
+              </Link>
+
+              <Link
+                href="https://facebook.com/username_kamu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition hover:border-blue-500 hover:text-blue-500"
+              >
+                <FaFacebook size={16} />
+              </Link>
+
+              <Link
+                href="https://tiktok.com/@username_kamu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-500 transition hover:border-gray-900 hover:text-gray-900"
+              >
+                <FaTiktok size={16} />
+              </Link>
+            </div>
           </div>
 
           {/* Menu */}
 
-          <div className="hidden lg:block lg:mx-auto">
-            <h3 className="font-semibold text-xl  mb-4">Menu</h3>
+          <div className="hidden lg:block">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900">
+              Menu
+            </h3>
 
-            <ul className="space-y-3">
+            <ul className="mt-5 space-y-3">
               <li>
-                <Link href="/#">Beranda</Link>
+                <Link href="/#" className="transition hover:text-orange-500">
+                  Beranda
+                </Link>
               </li>
 
               <li>
-                <Link href="/#service">Layanan</Link>
+                <Link href="/#service" className="transition hover:text-orange-500">
+                  Layanan
+                </Link>
               </li>
 
               <li>
-                <Link href="/#review">Ulasan</Link>
+                <Link href="/#review" className="transition hover:text-orange-500">
+                  Ulasan
+                </Link>
               </li>
 
               <li>
-                <Link href="/#kontak">Kontak</Link>
+                <Link href="/#kontak" className="transition hover:text-orange-500">
+                  Kontak
+                </Link>
               </li>
             </ul>
           </div>
@@ -46,59 +84,35 @@ export default function Footer() {
           {/* Kontak */}
 
           <div>
-            <div className="space-y-4 ">
-              <div className="flex gap-3">
-                <MapPin className="text-red-500" size={20} />
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900">
+              Hubungi Kami
+            </h3>
+
+            <div className="mt-5 space-y-4">
+              <div className="flex items-start gap-3">
+                <MapPin className="mt-0.5 shrink-0 text-red-500" size={18} />
                 <p>Bogor, Jawa Barat</p>
               </div>
 
-              <h3 className="font-semibold text-lg mb-4">Hubungi Kami</h3>
+              <div className="flex items-start gap-3">
+                <Mail className="mt-0.5 shrink-0 text-amber-500" size={18} />
+                <p>wahyurifai63@gmail.com</p>
+              </div>
 
               <a
                 href="https://wa.me/6281234567890"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-white transition"
+                className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-white transition hover:bg-green-700"
               >
                 <FaWhatsapp size={18} />
                 Chat WhatsApp
               </a>
-
-              <div className="flex gap-3">
-                <Mail className="text-amber-500" size={20} />
-                <p>wahyurifai63@gmail.com</p>
-              </div>
-
-              <div className="flex gap-4 text-2xl">
-                <Link
-                  href="https://instagram.com/username_kamu"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaInstagram className="hover:text-pink-700 duration-300" />
-                </Link>
-
-                <Link
-                  href="https://facebook.com/username_kamu"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaFacebook className="hover:text-blue-500 duration-300" />
-                </Link>
-
-                <Link
-                  href="https://tiktok.com/@username_kamu"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <FaTiktok className="hover:text-gray-800 duration-300" />
-                </Link>
-              </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-500 my-10 pt-6 text-center text-zinc-500 text-sm">
+        <div className="mt-14 border-t border-gray-200 pt-6 text-center text-sm text-zinc-500">
           © 2026 RFI Media. All Rights Reserved.
         </div>
       </div>

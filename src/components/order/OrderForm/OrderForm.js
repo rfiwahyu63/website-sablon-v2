@@ -403,7 +403,7 @@ export default function OrderForm({ onSubmitOrder }) {
           </h1>
 
           <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-gray-500 sm:text-base">
-            Lengkapilah detail formulir dibawah untuk melakukan pemesanan.ss
+            Lengkapilah detail formulir dibawah untuk melakukan pemesanan.
           </p>
         </div>
 
