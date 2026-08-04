@@ -9,4 +9,4 @@ export const supabase = createClient(
   supabasePublishableKey,
 );
 console.log("URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
-console.log("KEY ADA?:", !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+console.log("KEY ADA?:", !!process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);

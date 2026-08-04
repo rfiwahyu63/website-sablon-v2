@@ -27,24 +27,30 @@ const orderData = {
       jenisOrder: "kaos",
       price: 45000,
     },
-    {
-      id: "bahan-hoodie",
-      name: "Bahan Hoodie All Size",
-      jenisOrder: "hoodie",
-      price: 60000,
-    },
-    {
-      id: "bahan-totebag",
-      name: "Bahan Totebag",
-      jenisOrder: "totebag",
-      price: 20000,
-    },
-    {
-      id: "bahan-customer",
-      name: "Bahan dari Customer",
-      jenisOrder: "all",
-      price: 0,
-    },
+      {
+    id: "bahan-customer",
+    name: "Bahan dari Customer",
+    jenisOrder: "all",
+    price: 0,
+   },
+    // {
+    //   id: "bahan-hoodie",
+    //   name: "Bahan Hoodie All Size",
+    //   jenisOrder: "hoodie",
+    //   price: 60000,
+    // },
+    // {
+    //   id: "bahan-totebag",
+    //   name: "Bahan Totebag",
+    //   jenisOrder: "totebag",
+    //   price: 20000,
+    // },
+    // {
+    //   id: "bahan-customer",
+    //   name: "Bahan dari Customer",
+    //   jenisOrder: "all",
+    //   price: 0,
+    // },
   ],
 
   warna: [

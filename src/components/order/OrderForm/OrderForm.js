@@ -183,6 +183,8 @@ export default function OrderForm({ onSubmitOrder }) {
     return 0;
   }
 
+  
+
   async function submitOrderToSupabase() {
     const price = calculateOrderPrice({
       jenisOrder: formData.jenisOrder,
@@ -195,6 +197,25 @@ export default function OrderForm({ onSubmitOrder }) {
       ongkir: formData.ongkir,
     });
 
+    const orderCode = await generateOrderCode();
+
+    function generateOrderCode() {
+  const now = new Date();
+  const tanggal = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0"),
+  ].join("");
+
+  const nomorAcak = crypto
+    .randomUUID()
+    .replace(/-/g, "")
+    .slice(0, 4)
+    .toUpperCase();
+
+  return `RFI-${tanggal}-${nomorAcak}`;
+    }
+
     // 1. UPLOAD MOCKUP (kalau ada)
     const mockupUrl = formData.mockup
       ? await uploadFile(formData.mockup, "mockup")
@@ -204,6 +225,8 @@ export default function OrderForm({ onSubmitOrder }) {
     const { data: orderRow, error: orderError } = await supabase
       .from("orders")
       .insert({
+        order_code: orderCode,
+        status: "wait_payment",
         customer_nama: formData.nama,
         customer_whatsapp: formData.whatsapp,
         customer_alamat: formData.alamat,
@@ -262,7 +285,9 @@ export default function OrderForm({ onSubmitOrder }) {
 
     // BENTUK DATA UNTUK DITAMPILKAN DI ORDER SUMMARY
     return {
+      
       orderId: orderRow.id,
+      orderCode: orderRow.order_code,
       status: orderRow.status,
 
       customer: {
@@ -378,7 +403,7 @@ export default function OrderForm({ onSubmitOrder }) {
           </h1>
 
           <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-gray-500 sm:text-base">
-            Lengkapilah detail formulir dibawah untuk melakukan pemesanan.
+            Lengkapilah detail formulir dibawah untuk melakukan pemesanan.ss
           </p>
         </div>
 

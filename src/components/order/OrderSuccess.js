@@ -34,7 +34,7 @@ export default function OrderSuccess({ order }) {
           </p>
 
           <p className="mt-2 text-xl font-bold tracking-wide text-gray-900">
-            {order?.orderId || "-"}
+            {order?.orderCode || "-"}
           </p>
 
           <p className="mt-3 text-xs text-gray-400">

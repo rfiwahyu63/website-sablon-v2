@@ -166,7 +166,7 @@ export default function QuantityData({
             id="jumlah-cetak"
             type="number"
             min="1"
-            value={jumlah}
+            value={jumlah === 0 ? "" : jumlah}
             onChange={(e) =>
               handleJumlahChange(
                 e.target.value,
@@ -228,7 +228,7 @@ export default function QuantityData({
             id="jumlah-totebag"
             type="number"
             min="1"
-            value={jumlah}
+            value={jumlah === 0 ? "" : jumlah}
             onChange={(e) =>
               handleJumlahChange(
                 e.target.value,
@@ -288,9 +288,7 @@ export default function QuantityData({
                 <input
                   type="number"
                   min="0"
-                  value={getHoodieQuantity(
-                    size,
-                  )}
+                  value={getHoodieQuantity(size) === 0 ? "" : getHoodieQuantity(size)}
                   onChange={(e) =>
                     handleHoodieQuantityChange(
                       size,
@@ -404,10 +402,7 @@ export default function QuantityData({
                   <input
                     type="number"
                     min="0"
-                    value={getQuantity(
-                      lengan.id,
-                      size,
-                    )}
+                    value={getQuantity(lengan.id, size) === 0 ? "" : getQuantity(lengan.id, size)}
                     onChange={(e) =>
                       handleKaosQuantityChange(
                         lengan.id,

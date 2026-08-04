@@ -30,26 +30,8 @@ export default function OrderPage() {
   }
 
   function handleConfirmPayment(pembayaran) {
-    const now = new Date();
-
-    const tanggal = [
-      now.getFullYear(),
-      String(now.getMonth() + 1).padStart(2, "0"),
-      String(now.getDate()).padStart(2, "0"),
-    ].join("");
-
-    const nomorAcak = crypto
-      .randomUUID()
-      .replace(/-/g, "")
-      .slice(0, 4)
-      .toUpperCase();
-
-    const orderId = `RFI-${tanggal}-${nomorAcak}`;
-
     const updatedOrder = {
       ...order,
-
-      orderId,
 
       status: "WAITING_CONFIRMATION",
 
@@ -66,6 +48,7 @@ export default function OrderPage() {
       behavior: "smooth",
     });
   }
+
   function handleBack() {
     setStep("form");
 
@@ -104,8 +87,8 @@ export default function OrderPage() {
         />
       )}
 
-      {step === "success" && ( 
-        <OrderSuccess order={order} /> 
+      {step === "success" && (
+        <OrderSuccess order={order} />
       )}
     </>
   );
