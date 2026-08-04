@@ -46,13 +46,15 @@ export default function AdminDashboard() {
   
   return (
     <div className="p-6">
+      <div className="flex lg:flex-col justify-between ">
       <h1 className="text-2xl font-bold">Dashboard Admin</h1>
         <button
     onClick={handleLogout}
-    className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+    className="lg:ml-auto lg:mr-15 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-300 cursor-pointer"
   >
     Logout
   </button>
+  </div>
       <p className="mt-2 text-sm text-gray-500">Total order: {orders.length}</p>
 
       <div className="mt-4 flex gap-2">

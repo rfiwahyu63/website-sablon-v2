@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
+import Link from "next/link";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -9,7 +10,7 @@ const montserrat = Montserrat({
 export default function Hero() {
   return (
     <section className="bg-transparent px-6 py-16 lg:px-10 lg:py-24">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-12 lg:flex-row lg:pl-56">
+      <div className="flex max-w-6xl flex-col items-center gap-12 lg:flex-row">
         {/* Kiri */}
         <div className="lg:w-1/2">
           <span className="inline-block rounded-full bg-amber-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-amber-600">
@@ -25,8 +26,7 @@ export default function Hero() {
 
           <p className="mt-6 text-sm leading-relaxed text-gray-600 lg:text-lg">
             Tuangkan kreativitas Anda dalam sebuah desain dan aplikasikan pada
-            kaos untuk kebutuhan branding maupun gaya pribadi. Hasil tajam,
-            warna awet, dan proses cepat.
+            kaos untuk kebutuhan branding maupun gaya pribadi.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500">
@@ -52,12 +52,12 @@ export default function Hero() {
               Pesan Sekarang
             </a>
 
-            <a
+            <Link
               href="/#service"
               className="rounded-xl border border-gray-200 px-6 py-3 font-medium text-gray-700 transition hover:border-gray-400 hover:bg-gray-50"
             >
               Lihat Layanan
-            </a>
+            </Link>
           </div>
         </div>
 

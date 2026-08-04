@@ -183,8 +183,6 @@ export default function OrderForm({ onSubmitOrder }) {
     return 0;
   }
 
-  
-
   async function submitOrderToSupabase() {
     const price = calculateOrderPrice({
       jenisOrder: formData.jenisOrder,
@@ -200,20 +198,20 @@ export default function OrderForm({ onSubmitOrder }) {
     const orderCode = await generateOrderCode();
 
     function generateOrderCode() {
-  const now = new Date();
-  const tanggal = [
-    now.getFullYear(),
-    String(now.getMonth() + 1).padStart(2, "0"),
-    String(now.getDate()).padStart(2, "0"),
-  ].join("");
+      const now = new Date();
+      const tanggal = [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0"),
+      ].join("");
 
-  const nomorAcak = crypto
-    .randomUUID()
-    .replace(/-/g, "")
-    .slice(0, 4)
-    .toUpperCase();
+      const nomorAcak = crypto
+        .randomUUID()
+        .replace(/-/g, "")
+        .slice(0, 4)
+        .toUpperCase();
 
-  return `RFI-${tanggal}-${nomorAcak}`;
+      return `RFI-${tanggal}-${nomorAcak}`;
     }
 
     // 1. UPLOAD MOCKUP (kalau ada)
@@ -222,11 +220,18 @@ export default function OrderForm({ onSubmitOrder }) {
       : null;
 
     // 2. INSERT KE TABLE ORDERS
+    const paymentDeadline = new Date();
+    paymentDeadline.setHours(paymentDeadline.getHours() + 48);
+
     const { data: orderRow, error: orderError } = await supabase
       .from("orders")
       .insert({
         order_code: orderCode,
         status: "wait_payment",
+
+        // Batas pembayaran 24 jam
+        payment_deadline: paymentDeadline.toISOString(),
+
         customer_nama: formData.nama,
         customer_whatsapp: formData.whatsapp,
         customer_alamat: formData.alamat,
@@ -285,7 +290,6 @@ export default function OrderForm({ onSubmitOrder }) {
 
     // BENTUK DATA UNTUK DITAMPILKAN DI ORDER SUMMARY
     return {
-      
       orderId: orderRow.id,
       orderCode: orderRow.order_code,
       status: orderRow.status,
@@ -476,7 +480,7 @@ export default function OrderForm({ onSubmitOrder }) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-xl bg-gray-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-xl bg-gray-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting
                 ? "Menyimpan pesanan..."

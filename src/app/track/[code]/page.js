@@ -3,19 +3,23 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import Link from "next/link";
 
 const statusLabel = {
-  wait_payment: "Menunggu Pembayaran",
-  dibayar: "Sudah Dibayar",
-  diproses: "Diproses",
-  selesai: "Selesai",
+  wait_payment: "Validasi Pembayaran Oleh Admin",
+  dibayar: "Pembayaran Valid",
+  diproses: "Order Dalam Proses",
+  selesai: "Order Selesai",
+  expired: "Pesanan Kedaluwarsa",
 };
 
 const steps = [
-  { key: "wait_payment", label: "Konfirmasi Pembayaran" },
-  { key: "dibayar", label: "Sudah Dibayar" },
-  { key: "diproses", label: "Diproses" },
-  { key: "selesai", label: "Selesai" },
+  { key: "wait_payment", label: "Validasi Pembayaran" },
+  { key: "dibayar", label: "Pembayaran Valid" },
+  { key: "diproses", label: "Order Dalam Proses" },
+  { key: "selesai", label: "Order Selesai" },
+  { key: "expired", label: "Pesanan Kadaluwarsa" },
+  
 ];
 
 export default function TrackOrderPage() {
@@ -54,7 +58,14 @@ export default function TrackOrderPage() {
   }
 
   return (
-  <div className="mx-auto max-w-2xl p-6">
+  <div className="mx-auto lg:ml-auto max-w-2xl p-6">
+    {/* Kembali */}
+      <Link
+        href="/"
+        className="mb-5 inline-block text-sm text-amber-500 hover:text-amber-900"
+      >
+        ← Kembali ke Beranda
+      </Link>
     <h1 className="text-2xl font-bold"> Order Code: {order.order_code}</h1>
     <p className="mt-1 text-sm text-gray-500">
       Pantau status pesanan kamu di sini.
@@ -82,7 +93,7 @@ export default function TrackOrderPage() {
                   </div>
 
                   <p
-                    className={`mt-2 max-w-[70px] text-center text-[10px] ${
+                    className={`mt-2 max-w-17.5 text-center text-[10px] ${
                       isDone ? "font-medium text-gray-900" : "text-gray-400"
                     }`}
                   >

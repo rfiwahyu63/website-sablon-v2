@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { uploadFile } from "@/lib/uploadFile";
+import { Copy, Check, Upload } from "lucide-react";
 
 export default function Payment({ order, onBack, onConfirm }) {
   const [metode, setMetode] = useState("");
@@ -64,6 +65,18 @@ export default function Payment({ order, onBack, onConfirm }) {
     }
   }
 
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyRekening = async () => {
+    await navigator.clipboard.writeText("1234567890");
+
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
+
   return (
     <main className="min-h-screen bg-white px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-3xl">
@@ -81,7 +94,6 @@ export default function Payment({ order, onBack, onConfirm }) {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* TOTAL PEMBAYARAN */}
-
           <section className="rounded-2xl border border-gray-200 bg-gray-50 p-6 sm:p-8">
             <p className="text-sm text-gray-500">Total yang harus dibayarkan</p>
 
@@ -89,9 +101,7 @@ export default function Payment({ order, onBack, onConfirm }) {
               {formatRupiah(total)}
             </p>
           </section>
-
           {/* METODE PEMBAYARAN */}
-
           <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
             <h2 className="text-lg font-semibold text-gray-900">
               Metode Pembayaran
@@ -143,9 +153,7 @@ export default function Payment({ order, onBack, onConfirm }) {
               </label>
             </div>
           </section>
-
           {/* INFORMASI PEMBAYARAN */}
-
           {metode && (
             <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
               <h2 className="text-lg font-semibold text-gray-900">
@@ -162,9 +170,29 @@ export default function Payment({ order, onBack, onConfirm }) {
 
                   <p className="mt-3 text-xs text-gray-500">Nomor Rekening</p>
 
-                  <p className="mt-1 text-sm font-semibold text-gray-900">
-                    1234567890
-                  </p>
+                  <div className="mt-1 flex items-center justify-between gap-3">
+                    <p className="text-sm font-semibold text-gray-900">
+                      1234567890
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={handleCopyRekening}
+                      className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-600 transition hover:bg-gray-200 hover:text-gray-900"
+                    >
+                      {copied ? (
+                        <>
+                          <Check size={15} />
+                          Tersalin
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={15} />
+                          Salin
+                        </>
+                      )}
+                    </button>
+                  </div>
 
                   <p className="mt-3 text-xs text-gray-500">Atas Nama</p>
 
@@ -177,15 +205,15 @@ export default function Payment({ order, onBack, onConfirm }) {
               {metode === "qris" && (
                 <div className="mt-5 rounded-xl bg-gray-50 p-6 text-center">
                   <p className="text-sm text-gray-600">
-                    QRIS pembayaran akan ditampilkan di sini.
+                    QRIS pembayaran akan ditampilkan di sini. Saat ini belum
+                    tersedia.
                   </p>
                 </div>
               )}
             </section>
           )}
-
+        
           {/* BUKTI PEMBAYARAN */}
-
           <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
             <h2 className="text-lg font-semibold text-gray-900">
               Bukti Pembayaran
@@ -195,27 +223,50 @@ export default function Payment({ order, onBack, onConfirm }) {
               Upload screenshot atau foto bukti pembayaran.
             </p>
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                setBukti(e.target.files?.[0] || null);
-              }}
-              className="mt-5 block w-full rounded-xl border border-gray-200 px-3 py-3 text-sm text-gray-600"
-            />
+            <label className="mt-5 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 px-6 py-8 text-center transition hover:border-gray-400 hover:bg-gray-100">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm">
+                <Upload size={22} className="text-gray-700" />
+              </div>
+
+              <p className="text-sm font-medium text-gray-900">
+                Pilih bukti pembayaran
+              </p>
+
+              <p className="mt-1 text-xs text-gray-500">
+                Klik tombol di bawah untuk mencari file
+              </p>
+
+              <span className="mt-4 rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800">
+                Pilih File
+              </span>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  setBukti(e.target.files?.[0] || null);
+                }}
+                className="hidden"
+              />
+            </label>
 
             {bukti && (
-              <p className="mt-3 text-xs text-gray-500">File: {bukti.name}</p>
+              <div className="mt-3 rounded-lg bg-gray-50 px-4 py-3">
+                <p className="text-xs text-gray-500">File yang dipilih:</p>
+
+                <p className="mt-1 truncate text-sm font-medium text-gray-900">
+                  {bukti.name}
+                </p>
+              </div>
             )}
           </section>
-
+          
           {/* ACTION */}
-
           <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
             <button
               type="button"
               onClick={onBack}
-              className="rounded-xl border border-gray-200 px-5 py-3 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-gray-50"
+              className="rounded-xl border border-gray-200 px-5 py-3 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-gray-50 cursor-pointer"
             >
               Kembali
             </button>
@@ -223,7 +274,7 @@ export default function Payment({ order, onBack, onConfirm }) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="rounded-xl bg-gray-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-gray-800"
+              className="rounded-xl bg-gray-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-gray-800 cursor-pointer"
             >
               {isSubmitting ? "Mengirim..." : "Konfirmasi Pembayaran"}
             </button>

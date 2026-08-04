@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function OrderSuccess({ order }) {
   const formatRupiah = (value) =>
     `Rp${Number(value || 0).toLocaleString("id-ID")}`;
@@ -7,6 +9,13 @@ export default function OrderSuccess({ order }) {
   return (
     <main className="min-h-screen bg-white px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-2xl">
+
+        <Link
+        href="/admin"
+        className="mb-4 inline-block text-sm text-amber-500 hover:text-amber-900"
+      >
+        ← Kembali ke Beranda
+      </Link>
 
         {/* HEADER */}
 

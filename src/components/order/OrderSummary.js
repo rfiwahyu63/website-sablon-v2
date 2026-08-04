@@ -545,7 +545,7 @@ export default function OrderSummary({ order, onBack, onContinue }) {
           <button
             type="button"
             onClick={onBack}
-            className="rounded-xl border border-gray-200 px-5 py-3 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-gray-50"
+            className="rounded-xl border border-gray-200 px-5 py-3 text-sm font-medium text-gray-700 transition hover:border-gray-400 hover:bg-gray-50 cursor-pointer"
           >
             Kembali Edit
           </button>
@@ -553,7 +553,7 @@ export default function OrderSummary({ order, onBack, onContinue }) {
           <button
             type="button"
             onClick={onContinue}
-            className="rounded-xl bg-gray-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-gray-800"
+            className="rounded-xl bg-gray-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-gray-800 cursor-pointer"
           >
             Lanjut Pembayaran
           </button>
