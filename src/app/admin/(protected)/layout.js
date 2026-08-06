@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import AdminLayout from '@/components/admin/AdminLayout';
 
-export default function AdminLayout({ children }) {
+export default function Layout({ children }) {
   const [checking, setChecking] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
@@ -34,5 +35,5 @@ export default function AdminLayout({ children }) {
     return <div className="p-6">Memeriksa sesi login...</div>;
   }
 
-  return children;
+  return <AdminLayout>{children}</AdminLayout>;
 }

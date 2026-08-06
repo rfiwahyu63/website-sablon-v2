@@ -10,7 +10,7 @@ const statusLabel = {
   dibayar: "Pembayaran Valid",
   diproses: "Order Dalam Proses",
   selesai: "Order Selesai",
-  expired: "Pesanan Kedaluwarsa",
+  expired: "Order Kadaluarsa",
 };
 
 const steps = [
@@ -18,7 +18,7 @@ const steps = [
   { key: "dibayar", label: "Pembayaran Valid" },
   { key: "diproses", label: "Order Dalam Proses" },
   { key: "selesai", label: "Order Selesai" },
-  { key: "expired", label: "Pesanan Kadaluwarsa" },
+  { key: "expired", label: "Order Kadaluarsa" },
   
 ];
 

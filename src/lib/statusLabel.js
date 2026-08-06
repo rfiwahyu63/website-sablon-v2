@@ -3,6 +3,6 @@ export const statusLabel = {
   dibayar: "Pembayaran Valid",
   diproses: "Order Dalam Proses",
   selesai: "Order Selesai",
-  expired: "Pesanan Kedaluwarsa",
+  expired: "Order Kadaluarsa",
 };
 

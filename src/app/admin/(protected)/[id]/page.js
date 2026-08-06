@@ -122,6 +122,14 @@ export default function AdminOrderDetail() {
     }
   }
 
+  const statusColor = {
+  wait_payment: "bg-yellow-100",
+  dibayar: "bg-blue-100",
+  diproses: "bg-indigo-100",
+  selesai: "bg-green-100",
+  expired: "bg-red-100",
+};
+
   return (
     <div className="mx-auto mt-10 max-w-3xl p-6">
       {/* Kembali */}
@@ -198,36 +206,66 @@ export default function AdminOrderDetail() {
         </section>
 
         {/* JUMLAH PESANAN */}
-        {(order.jumlah || order.ukuran) && (
-          <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Jumlah Pesanan
-            </h2>
+{order.ukuran && (
+  <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+    <h2 className="text-lg font-semibold text-gray-900">
+      Jumlah Pesanan
+    </h2>
 
-            <div className="mt-5 space-y-4">
-              {order.jumlah && (
-                <InfoRow
-                  label="Jumlah"
-                  value={order.jumlah}
-                />
-              )}
+    <div className="mt-5 space-y-3">
+      {typeof order.ukuran === "string" ? (
+        <p className="text-sm text-gray-700">
+          {order.ukuran}
+        </p>
+      ) : (
+        Object.entries(order.ukuran).map(([lengan, ukuranData]) => (
+          <div
+            key={lengan}
+            className="rounded-xl bg-gray-50 p-4"
+          >
+            <p className="text-sm font-medium capitalize text-gray-900">
+              Lengan {lengan}
+            </p>
 
-              {order.ukuran && (
-                <div>
-                  <p className="text-xs text-gray-500">
-                    Ukuran
-                  </p>
+            <div className="mt-2 space-y-1">
+              {Object.entries(ukuranData).map(
+                ([ukuran, jumlah]) => (
+                  <div
+                    key={ukuran}
+                    className="flex justify-between text-sm"
+                  >
+                    <span className="text-gray-500">
+                      Ukuran {ukuran}
+                    </span>
 
-                  <pre className="mt-2 overflow-x-auto rounded-xl bg-gray-50 p-4 text-sm text-gray-700">
-                    {typeof order.ukuran === "string"
-                      ? order.ukuran
-                      : JSON.stringify(order.ukuran, null, 2)}
-                  </pre>
-                </div>
+                    <span className="font-medium text-gray-900">
+                      {jumlah} pcs
+                    </span>
+                  </div>
+                ),
               )}
             </div>
-          </section>
-        )}
+          </div>
+        ))
+      )}
+
+      <div className="border-t border-gray-200 pt-3">
+        <div className="flex justify-between">
+          <span className="font-semibold text-gray-900">
+            Total
+          </span>
+
+          <span className="font-bold text-gray-900">
+            {Object.values(order.ukuran)
+              .flatMap((lengan) => Object.values(lengan))
+              .reduce((total, jumlah) => total + Number(jumlah), 0)}{" "}
+            pcs
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
 
         {/* DESAIN */}
         <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -409,59 +447,65 @@ export default function AdminOrderDetail() {
         </section>
 
         {/* RINGKASAN HARGA */}
-        <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-900">
-            Ringkasan Harga
-          </h2>
+<section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+  <h2 className="text-lg font-semibold text-gray-900">
+    Ringkasan Harga
+  </h2>
 
-          <div className="mt-5 space-y-4">
-            {order.harga_bahan && (
-              <InfoRow
-                label="Harga Bahan"
-                value={`Rp${Number(
-                  order.harga_bahan,
-                ).toLocaleString("id-ID")}`}
-              />
-            )}
+  <div className="mt-5 space-y-3">
+    {order.harga_bahan && (
+      <div className="flex items-start justify-between text-sm">
+        <span className="text-gray-500">
+          Bahan (Rp{Number(order.harga_bahan).toLocaleString("id-ID")} × {order.jumlah || 1})
+        </span>
+        <span className="font-medium text-gray-900">
+          Rp{Number(order.harga_bahan * (order.jumlah || 1)).toLocaleString("id-ID")}
+        </span>
+      </div>
+    )}
 
-            {order.harga_desain && (
-              <InfoRow
-                label="Harga Desain"
-                value={`Rp${Number(
-                  order.harga_desain,
-                ).toLocaleString("id-ID")}`}
-              />
-            )}
+    {order.harga_desain && (
+      <div className="flex items-start justify-between text-sm">
+        <span className="text-gray-500">
+          Desain (Rp{Number(order.harga_desain).toLocaleString("id-ID")} × {order.jumlah || 1})
+        </span>
+        <span className="font-medium text-gray-900">
+          Rp{Number(order.harga_desain * (order.jumlah || 1)).toLocaleString("id-ID")}
+        </span>
+      </div>
+    )}
 
-            {order.diskon && (
-              <InfoRow
-                label="Diskon"
-                value={`- Rp${Number(
-                  order.diskon,
-                ).toLocaleString("id-ID")}`}
-              />
-            )}
+    <div className="flex items-center justify-between border-t border-gray-100 pt-3 text-sm">
+      <span className="text-gray-600">Subtotal Produk</span>
+      <span className="font-medium text-gray-900">
+        Rp{Number(
+          ((order.harga_bahan || 0) + (order.harga_desain || 0)) * (order.jumlah || 1)
+        ).toLocaleString("id-ID")}
+      </span>
+    </div>
 
-            {order.ongkir && (
-              <InfoRow
-                label="Ongkir"
-                value={`Rp${Number(
-                  order.ongkir,
-                ).toLocaleString("id-ID")}`}
-              />
-            )}
+    {order.ongkir && (
+      <InfoRow
+        label="Ongkir"
+        value={`Rp${Number(order.ongkir).toLocaleString("id-ID")}`}
+      />
+    )}
 
-            <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-              <span className="font-semibold text-gray-900">
-                Total
-              </span>
+    {order.diskon && (
+      <InfoRow
+        label="Diskon"
+        value={`- Rp${Number(order.diskon).toLocaleString("id-ID")}`}
+      />
+    )}
 
-              <span className="text-lg font-bold text-gray-900">
-                Rp{Number(order.total || 0).toLocaleString("id-ID")}
-              </span>
-            </div>
-          </div>
-        </section>
+    <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+      <span className="font-semibold text-gray-900">Total</span>
+      <span className="text-lg font-bold text-gray-900">
+        Rp{Number(order.total || 0).toLocaleString("id-ID")}
+      </span>
+    </div>
+  </div>
+</section>
 
         {/* STATUS */}
         <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -469,7 +513,7 @@ export default function AdminOrderDetail() {
             Status Order
           </h2>
 
-          <div className="mt-4 rounded-xl bg-green-50 p-4">
+          <div className={`mt-4 rounded-xl p-4 ${statusColor[order.status] || "bg-gray-50"}`}>
             <p className="text-xs text-gray-500">
               Status Saat Ini
             </p>
@@ -485,12 +529,7 @@ export default function AdminOrderDetail() {
             </p>
 
             <div className="flex flex-wrap gap-2">
-              {[
-                "wait_payment",
-                "dibayar",
-                "diproses",
-                "selesai",
-              ].map((status) => (
+              {Object.keys(statusLabel).map((status) => (
                 <button
                   key={status}
                   onClick={() => handleUpdateStatus(status)}

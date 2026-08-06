@@ -1,14 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { uploadFile } from "@/lib/uploadFile";
+import { getBusinessInfo } from "@/lib/getBusinessInfo";
 import { Copy, Check, Upload } from "lucide-react";
 
 export default function Payment({ order, onBack, onConfirm }) {
   const [metode, setMetode] = useState("");
   const [bukti, setBukti] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [businessInfo, setBusinessInfo] = useState(null);
+  const [copiedIndex, setCopiedIndex] = useState(null);
+
+  useEffect(() => {
+    getBusinessInfo().then(setBusinessInfo);
+  }, []);
 
   const total = Number(order?.harga?.total || 0);
 
@@ -65,17 +72,11 @@ export default function Payment({ order, onBack, onConfirm }) {
     }
   }
 
-  const [copied, setCopied] = useState(false);
-
-  const handleCopyRekening = async () => {
-    await navigator.clipboard.writeText("1234567890");
-
-    setCopied(true);
-
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  };
+  const handleCopyRekening = async (nomor, index) => {
+  await navigator.clipboard.writeText(nomor);
+  setCopiedIndex(index);
+  setTimeout(() => setCopiedIndex(null), 2000);
+};
 
   return (
     <main className="min-h-screen bg-white px-4 py-10 sm:px-6 lg:px-8">
@@ -153,54 +154,57 @@ export default function Payment({ order, onBack, onConfirm }) {
               </label>
             </div>
           </section>
+          
           {/* INFORMASI PEMBAYARAN */}
-          {metode && (
-            <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Informasi Pembayaran
-              </h2>
+          
+          {metode === "transfer" && (
+  <div className="mt-5 space-y-3">
+    {businessInfo?.rekening?.length > 0 ? (
+      businessInfo.rekening.map((rek, index) => (
+        <div key={index} className="rounded-xl bg-gray-50 p-4">
+          <p className="text-xs text-gray-500">Bank</p>
+          <p className="mt-1 text-sm font-semibold text-gray-900">
+            {rek.bank}
+          </p>
 
-              {metode === "transfer" && (
-                <div className="mt-5 rounded-xl bg-gray-50 p-4">
-                  <p className="text-xs text-gray-500">Bank</p>
+          <p className="mt-3 text-xs text-gray-500">Nomor Rekening</p>
+          <div className="mt-1 flex items-center justify-between gap-3">
+            <p className="text-sm font-semibold text-gray-900">
+              {rek.nomor}
+            </p>
 
-                  <p className="mt-1 text-sm font-semibold text-gray-900">
-                    BCA
-                  </p>
-
-                  <p className="mt-3 text-xs text-gray-500">Nomor Rekening</p>
-
-                  <div className="mt-1 flex items-center justify-between gap-3">
-                    <p className="text-sm font-semibold text-gray-900">
-                      1234567890
-                    </p>
-
-                    <button
-                      type="button"
-                      onClick={handleCopyRekening}
-                      className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-600 transition hover:bg-gray-200 hover:text-gray-900"
-                    >
-                      {copied ? (
-                        <>
-                          <Check size={15} />
-                          Tersalin
-                        </>
-                      ) : (
-                        <>
-                          <Copy size={15} />
-                          Salin
-                        </>
-                      )}
-                    </button>
-                  </div>
-
-                  <p className="mt-3 text-xs text-gray-500">Atas Nama</p>
-
-                  <p className="mt-1 text-sm font-semibold text-gray-900">
-                    RFI Design
-                  </p>
-                </div>
+            <button
+              type="button"
+              onClick={() => handleCopyRekening(rek.nomor, index)}
+              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-gray-600 transition hover:bg-gray-200 hover:text-gray-900"
+            >
+              {copiedIndex === index ? (
+                <>
+                  <Check size={15} />
+                  Tersalin
+                </>
+              ) : (
+                <>
+                  <Copy size={15} />
+                  Salin
+                </>
               )}
+            </button>
+          </div>
+
+          <p className="mt-3 text-xs text-gray-500">Atas Nama</p>
+          <p className="mt-1 text-sm font-semibold text-gray-900">
+            {rek.atas_nama}
+          </p>
+        </div>
+      ))
+    ) : (
+      <p className="mt-5 text-sm text-gray-500">
+        Informasi rekening belum tersedia.
+      </p>
+    )}
+  </div>
+)}
 
               {metode === "qris" && (
                 <div className="mt-5 rounded-xl bg-gray-50 p-6 text-center">
@@ -210,8 +214,6 @@ export default function Payment({ order, onBack, onConfirm }) {
                   </p>
                 </div>
               )}
-            </section>
-          )}
         
           {/* BUKTI PEMBAYARAN */}
           <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
